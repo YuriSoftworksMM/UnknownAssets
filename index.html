@@ -1,24 +1,267 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Unknown Executor</title>
 
 <style>
-    
-.loader {
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Segoe UI", sans-serif;
+}
+
+:root {
+    --bg: #070707;
+    --text: #e9e9e9;
+    --muted: #9a9a9a;
+    --card: rgba(255, 255, 255, 0.04);
+    --border: rgba(255, 255, 255, 0.08);
+    --shadow: rgba(255, 255, 255, 0.05);
+    --btn-bg: #f2f2f2;
+    --btn-text: #0f0f0f;
+}
+
+body.light {
+    --bg: #f4f4f4;
+    --text: #111111;
+    --muted: #666666;
+    --card: rgba(0, 0, 0, 0.05);
+    --border: rgba(0, 0, 0, 0.08);
+    --shadow: rgba(0, 0, 0, 0.06);
+    --btn-bg: #111111;
+    --btn-text: #f5f5f5;
+}
+
+html, body {
+    width: 100%;
+    min-height: 100%;
+}
+
+body {
+    background: var(--bg);
+    color: var(--text);
+    overflow-x: hidden;
+    transition: background 0.35s ease, color 0.35s ease;
+}
+
+/* Background */
+.bg {
     position: fixed;
     inset: 0;
-    background: rgba(0,0,0,0.85);
-    backdrop-filter: blur(10px);
+    z-index: -2;
+    overflow: hidden;
+    background:
+        radial-gradient(circle at 18% 25%, rgba(255,255,255,0.06), transparent 28%),
+        radial-gradient(circle at 82% 75%, rgba(255,255,255,0.05), transparent 30%),
+        radial-gradient(circle at 50% 50%, rgba(255,255,255,0.03), transparent 42%),
+        linear-gradient(120deg, #090909, #111111, #090909);
+    animation: bgFloat 14s ease-in-out infinite alternate;
+    transform: scale(1.08);
+}
+
+body.light .bg {
+    background:
+        radial-gradient(circle at 18% 25%, rgba(0,0,0,0.06), transparent 28%),
+        radial-gradient(circle at 82% 75%, rgba(0,0,0,0.05), transparent 30%),
+        radial-gradient(circle at 50% 50%, rgba(0,0,0,0.03), transparent 42%),
+        linear-gradient(120deg, #ffffff, #ececec, #ffffff);
+}
+
+@keyframes bgFloat {
+    from { transform: scale(1.08) translateY(0px); }
+    to { transform: scale(1.08) translateY(-18px); }
+}
+
+.bg::before,
+.bg::after {
+    content: "";
+    position: absolute;
+    inset: auto;
+    width: 420px;
+    height: 420px;
+    border-radius: 50%;
+    filter: blur(90px);
+    opacity: 0.18;
+    animation: blobMove 12s ease-in-out infinite alternate;
+}
+
+.bg::before {
+    top: 8%;
+    left: -8%;
+    background: rgba(255,255,255,0.12);
+}
+
+.bg::after {
+    right: -10%;
+    bottom: 6%;
+    background: rgba(255,255,255,0.09);
+    animation-duration: 15s;
+}
+
+body.light .bg::before,
+body.light .bg::after {
+    background: rgba(0,0,0,0.08);
+}
+
+@keyframes blobMove {
+    from { transform: translate(0, 0) scale(1); }
+    to { transform: translate(25px, -20px) scale(1.08); }
+}
+
+/* Top toggle */
+.toggle {
+    position: fixed;
+    top: 18px;
+    right: 18px;
+    width: 42px;
+    height: 42px;
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    background: var(--card);
     display: flex;
     align-items: center;
     justify-content: center;
+    backdrop-filter: blur(14px);
+    cursor: pointer;
+    z-index: 20;
+    transition: 0.25s ease;
+    user-select: none;
+    box-shadow: 0 0 0 1px rgba(255,255,255,0.02);
+}
+
+.toggle:hover {
+    transform: translateY(-1px) scale(1.04);
+    box-shadow: 0 10px 25px var(--shadow);
+}
+
+/* Main */
+.container {
+    max-width: 1050px;
+    margin: 0 auto;
+    padding: 138px 20px 62px;
+    text-align: center;
+    position: relative;
+    z-index: 1;
+}
+
+.badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 7px 13px;
+    border-radius: 999px;
+    font-size: 0.72rem;
+    color: #6bffab;
+    border: 1px solid rgba(107, 255, 171, 0.2);
+    background: rgba(107, 255, 171, 0.08);
+    margin-bottom: 18px;
+    backdrop-filter: blur(10px);
+}
+
+.badge::before {
+    content: "";
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #6bffab;
+    box-shadow: 0 0 10px rgba(107,255,171,0.6);
+}
+
+h1 {
+    font-size: 1.95rem;
+    font-weight: 600;
+    letter-spacing: 0.2px;
+    margin-bottom: 7px;
+}
+
+.subtitle {
+    font-size: 0.88rem;
+    color: var(--muted);
+    margin-bottom: 28px;
+}
+
+/* Cards */
+.cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+    gap: 14px;
+    margin-top: 6px;
+}
+
+.card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 22px 20px;
+    backdrop-filter: blur(18px);
+    box-shadow: 0 0 0 1px rgba(255,255,255,0.02);
+    transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+    min-height: 150px;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 18px 30px var(--shadow);
+    border-color: rgba(255,255,255,0.16);
+}
+
+.card h2 {
+    font-size: 1.15rem;
+    margin-bottom: 8px;
+    font-weight: 600;
+}
+
+.card p {
+    font-size: 0.8rem;
+    line-height: 1.55;
+    color: var(--muted);
+}
+
+/* Button */
+.btn {
+    margin-top: 34px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 11px 24px;
+    border-radius: 12px;
+    background: var(--btn-bg);
+    color: var(--btn-text);
+    text-decoration: none;
+    font-size: 0.84rem;
+    font-weight: 600;
+    border: none;
+    cursor: pointer;
+    transition: transform 0.2s ease, opacity 0.2s ease, box-shadow 0.2s ease;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+}
+
+.btn:hover {
+    transform: translateY(-2px);
+    opacity: 0.92;
+}
+
+.btn:active {
+    transform: translateY(0px) scale(0.99);
+}
+
+/* Loader */
+.loader {
+    position: fixed;
+    inset: 0;
     z-index: 999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 0, 0, 0.84);
+    backdrop-filter: blur(12px);
     opacity: 0;
     pointer-events: none;
-    transition: 0.3s;
+    transition: opacity 0.35s ease;
 }
 
 .loader.active {
@@ -26,271 +269,207 @@
     pointer-events: all;
 }
 
-.loader-box {
-    text-align: center;
+.loader.fade-out {
+    opacity: 0;
 }
 
-.circle {
-    width: 120px;
-    height: 120px;
-    border-radius: 50%;
-    border: 4px solid rgba(255,255,255,0.1);
-    border-top: 4px solid white;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    animation: spin 1s linear infinite;
-    margin: auto;
-    font-size: 1.1rem;
+.loader-box {
+    position: relative;
+    text-align: center;
+    padding: 22px 20px;
+}
+
+.progress-ring {
+    transform: rotate(-90deg);
+    filter: drop-shadow(0 0 10px rgba(255,255,255,0.14));
+}
+
+.ring-bg {
+    fill: transparent;
+    stroke: rgba(255,255,255,0.08);
+    stroke-width: 6;
+}
+
+.ring-progress {
+    fill: transparent;
+    stroke: #f2f2f2;
+    stroke-width: 6;
+    stroke-linecap: round;
+    stroke-dasharray: 377;
+    stroke-dashoffset: 377;
+    transition: stroke-dashoffset 0.12s linear;
+}
+
+.percent {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -62%);
+    font-size: 1.2rem;
+    font-weight: 600;
+    letter-spacing: 0.2px;
 }
 
 .loader p {
-    margin-top: 15px;
-    font-size: 0.8rem;
-    color: #aaa;
+    margin-top: 16px;
+    font-size: 0.82rem;
+    color: #b7b7b7;
+    letter-spacing: 0.2px;
 }
 
-@keyframes spin {
-    to { transform: rotate(360deg); }
+/* Small polish */
+::selection {
+    background: rgba(255,255,255,0.16);
 }
 
-
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'Segoe UI', sans-serif;
+body.light ::selection {
+    background: rgba(0,0,0,0.12);
 }
 
-:root {
-    --bg: #070707;
-    --text: #e4e4e4;
-    --card: rgba(255,255,255,0.04);
-    --border: rgba(255,255,255,0.08);
-}
+@media (max-width: 600px) {
+    .container {
+        padding-top: 124px;
+    }
 
-body.light {
-    --bg: #f2f2f2;
-    --text: #111;
-    --card: rgba(0,0,0,0.05);
-    --border: rgba(0,0,0,0.08);
-}
+    h1 {
+        font-size: 1.7rem;
+    }
 
-body {
-    background: var(--bg);
-    color: var(--text);
-    overflow-x: hidden;
-}
+    .cards {
+        grid-template-columns: 1fr;
+    }
 
-/* 🌌 배경 (글로우 + 그라데이션) */
-.bg {
-    position: fixed;
-    width: 100%;
-    height: 100%;
-    background:
-        radial-gradient(circle at 20% 30%, rgba(255,255,255,0.05), transparent 40%),
-        radial-gradient(circle at 80% 70%, rgba(255,255,255,0.04), transparent 40%),
-        linear-gradient(120deg, #0a0a0a, #111, #0a0a0a);
-    animation: floatBg 12s ease-in-out infinite alternate;
-    z-index: -1;
-}
-
-body.light .bg {
-    background:
-        radial-gradient(circle at 20% 30%, rgba(0,0,0,0.05), transparent 40%),
-        radial-gradient(circle at 80% 70%, rgba(0,0,0,0.04), transparent 40%),
-        linear-gradient(120deg, #ffffff, #eaeaea, #ffffff);
-}
-
-@keyframes floatBg {
-    from { transform: translateY(0px); }
-    to { transform: translateY(-20px); }
-}
-
-/* 🌙 토글 (아이콘 버튼) */
-.toggle {
-    position: fixed;
-    top: 18px;
-    right: 18px;
-    width: 38px;
-    height: 38px;
-    border-radius: 10px;
-    background: var(--card);
-    border: 1px solid var(--border);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    backdrop-filter: blur(10px);
-    font-size: 1rem;
-    transition: 0.25s;
-}
-
-.toggle:hover {
-    transform: scale(1.05);
-}
-
-.container {
-    max-width: 1000px;
-    margin: auto;
-    padding: 140px 20px 60px;
-    text-align: center;
-}
-
-.badge {
-    display: inline-block;
-    padding: 6px 12px;
-    border-radius: 999px;
-    background: rgba(0,255,120,0.1);
-    color: #5cff9c;
-    font-size: 0.7rem;
-    border: 1px solid rgba(0,255,120,0.2);
-    margin-bottom: 20px;
-}
-
-h1 {
-    font-size: 1.9rem;
-    margin-bottom: 6px;
-}
-
-.subtitle {
-    font-size: 0.85rem;
-    color: #888;
-    margin-bottom: 30px;
-}
-
-.cards {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-    gap: 14px;
-}
-
-.card {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 14px;
-    padding: 22px;
-    backdrop-filter: blur(18px);
-    transition: 0.25s;
-}
-
-.card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 0 25px rgba(255,255,255,0.06);
-}
-
-.card h2 {
-    font-size: 1.2rem;
-    margin-bottom: 6px;
-}
-
-.card p {
-    font-size: 0.78rem;
-    color: #aaa;
-    line-height: 1.4;
-}
-
-.btn {
-    margin-top: 35px;
-    display: inline-block;
-    padding: 10px 24px;
-    border-radius: 10px;
-    background: var(--text);
-    color: var(--bg);
-    text-decoration: none;
-    font-size: 0.8rem;
-    transition: 0.2s;
-}
-
-.btn:hover {
-    opacity: 0.8;
+    .card {
+        min-height: unset;
+    }
 }
 </style>
 </head>
-
 <body>
 
 <div class="bg"></div>
 
-<div class="toggle" onclick="toggleTheme()" id="toggleBtn">🌙</div>
+<div class="toggle" id="toggleBtn" aria-label="Toggle theme">🌙</div>
 
 <div class="container">
-    <div class="badge">● Undetected</div>
+    <div class="badge">Undetected</div>
 
-    <h1>Unknown</h1>
+    <h1>Unknown Executor</h1>
     <p class="subtitle">Minimal, fast, and reliable Roblox executor</p>
 
     <div class="cards">
         <div class="card">
             <h2>96% UNC</h2>
-            <p>High compatibility with most scripts, ensuring smooth execution without unexpected errors.</p>
+            <p>Strong compatibility with a wide range of scripts, keeping everyday use smooth and dependable.</p>
         </div>
 
         <div class="card">
             <h2>98% sUNC</h2>
-            <p>Advanced support for secure environments, maximizing performance and stability.</p>
+            <p>Built for stable performance in more demanding environments, with fewer interruptions and cleaner results.</p>
         </div>
 
         <div class="card">
-            <h2>Clean UI</h2>
-            <p>A minimal and intuitive interface designed for both beginners and experienced users.</p>
+            <h2>Clean, Beginner Friendly UI</h2>
+            <p>A simple layout that feels easy to understand right away, while still staying polished and modern.</p>
         </div>
 
         <div class="card">
             <h2>1 sec Attach</h2>
-            <p>Instant injection speed, letting you get in-game and ready almost immediately.</p>
+            <p>Designed to get you moving quickly, with a fast workflow that keeps the setup feeling lightweight.</p>
         </div>
     </div>
 
-    <a href="#" class="btn">Download</a>
+    <button class="btn" id="downloadBtn">Download</button>
+</div>
+
+<div class="loader" id="loader">
+    <div class="loader-box">
+        <svg class="progress-ring" width="140" height="140" viewBox="0 0 140 140">
+            <circle class="ring-bg" cx="70" cy="70" r="60"></circle>
+            <circle class="ring-progress" cx="70" cy="70" r="60"></circle>
+        </svg>
+        <div class="percent" id="percent">0%</div>
+        <p id="statusText">Initializing...</p>
+    </div>
 </div>
 
 <script>
-function toggleTheme() {
+document.addEventListener("DOMContentLoaded", () => {
     const body = document.body;
-    const btn = document.getElementById("toggleBtn");
+    const toggleBtn = document.getElementById("toggleBtn");
+    const downloadBtn = document.getElementById("downloadBtn");
+    const loader = document.getElementById("loader");
+    const percentText = document.getElementById("percent");
+    const statusText = document.getElementById("statusText");
+    const circle = document.querySelector(".ring-progress");
 
-    body.classList.toggle("light");
+    const radius = 60;
+    const circumference = 2 * Math.PI * radius;
 
-    if (body.classList.contains("light")) {
-        btn.textContent = "☀️";
-    } else {
-        btn.textContent = "🌙";
+    circle.style.strokeDasharray = circumference;
+    circle.style.strokeDashoffset = circumference;
+
+    function setProgress(percent) {
+        const offset = circumference - (percent / 100) * circumference;
+        circle.style.strokeDashoffset = offset;
     }
-}
-    
-const downloadBtn = document.querySelector(".btn");
-const loader = document.getElementById("loader");
-const percentText = document.getElementById("percent");
 
-downloadBtn.addEventListener("click", function(e) {
-    e.preventDefault();
+    function easeOutCubic(t) {
+        return 1 - Math.pow(1 - t, 3);
+    }
 
-    loader.classList.add("active");
+    toggleBtn.addEventListener("click", () => {
+        body.classList.toggle("light");
+        toggleBtn.textContent = body.classList.contains("light") ? "☀️" : "🌙";
+    });
 
-    let percent = 0;
+    downloadBtn.addEventListener("click", (e) => {
+        e.preventDefault();
 
-    const interval = setInterval(() => {
-        percent++;
+        loader.classList.remove("fade-out");
+        loader.classList.add("active");
 
-        percentText.textContent = percent + "%";
+        const duration = 2400; // 전체 진행 시간
+        const start = performance.now();
 
-        if (percent >= 100) {
-            clearInterval(interval);
+        function animate(now) {
+            const elapsed = now - start;
+            const raw = Math.min(elapsed / duration, 1);
+            const eased = easeOutCubic(raw);
+            const percent = Math.floor(eased * 100);
 
-            setTimeout(() => {
-                window.location.href = "https://gofile.io/d/jNjG2j";
-            }, 500);
+            percentText.textContent = percent + "%";
+            setProgress(percent);
+
+            if (percent < 30) {
+                statusText.textContent = "Initializing...";
+            } else if (percent < 70) {
+                statusText.textContent = "Preparing...";
+            } else if (percent < 99) {
+                statusText.textContent = "Finalizing...";
+            } else {
+                statusText.textContent = "Completed.";
+            }
+
+            if (raw < 1) {
+                requestAnimationFrame(animate);
+            } else {
+                percentText.textContent = "100%";
+                setProgress(100);
+
+                setTimeout(() => {
+                    loader.classList.add("fade-out");
+                    setTimeout(() => {
+                        window.location.href = "https://gofile.io/d/jNjG2j";
+                    }, 350);
+                }, 500);
+            }
         }
-    }, 25); // 속도 조절 가능
-});
 
+        requestAnimationFrame(animate);
+    });
+});
 </script>
-<div class="loader" id="loader"> 
-    <div class="loader-box"> 
-        <div class="circle"> 
-            <span id="percent">0%</span> 
-        </div> <p>Preparing download...</p> 
-    </div> </div>
+
 </body>
 </html>
