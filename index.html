@@ -209,6 +209,33 @@ function toggleTheme() {
         btn.textContent = "🌙";
     }
 }
+    
+const downloadBtn = document.querySelector(".btn");
+const loader = document.getElementById("loader");
+const percentText = document.getElementById("percent");
+
+downloadBtn.addEventListener("click", function(e) {
+    e.preventDefault();
+
+    loader.classList.add("active");
+
+    let percent = 0;
+
+    const interval = setInterval(() => {
+        percent++;
+
+        percentText.textContent = percent + "%";
+
+        if (percent >= 100) {
+            clearInterval(interval);
+
+            setTimeout(() => {
+                window.location.href = "https://gofile.io/d/jNjG2j";
+            }, 500);
+        }
+    }, 25); // 속도 조절 가능
+});
+
 </script>
 <div class="loader" id="loader"> 
     <div class="loader-box"> 
