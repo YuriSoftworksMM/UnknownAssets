@@ -1,15 +1,15 @@
-[ + More stable ]
-[ + Update UI ]
-
-Hello, Users! Thank you for using, choosing Unknown!
-I always love yall!
-
-[ Unknown V0.0.1 ]
--------- kor
-[ + 안정성 향상 ]
-[ + UI업데이트 ]
-
-안녕하세요, 사용자 여러분들! Unknown을 사용해주셔서 감사드립니다.
-여러분 모두 항상 사랑합니다!
-
-[Unknown 0.0.1버전]
+[ + More stable ]\n
+[ + Update UI ]\n
+\n
+Hello, Users! Thank you for using, choosing Unknown!\n
+I always love yall!\n
+\n
+[ Unknown V0.0.1 ]\n
+-------- kor\n
+[ + 안정성 향상 ]\n
+[ + UI업데이트 ]\n
+\n
+안녕하세요, 사용자 여러분들! Unknown을 사용해주셔서 감사드립니다.\n
+여러분 모두 항상 사랑합니다!\n
+\n
+[Unknown 0.0.1버전]\n
