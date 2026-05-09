@@ -1,6 +1,6 @@
 [ + More stable ]\n
 [ + Update UI ]\n
 \n
-ㅊurrently updating. Could you please wait? <3 \n
+Currently updating. Could you please wait? <3 \n
 \n
 [ Unknown V0.0.1 ]\n
