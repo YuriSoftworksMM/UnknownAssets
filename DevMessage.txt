@@ -1,7 +1,6 @@
 [ + More stable ]\n
 [ + Update UI ]\n
 \n
-Hello, Users! Thank you for using, choosing Unknown!\n
-I always love yall!\n
+ㅊurrently updating. Could you please wait? <3 \n
 \n
 [ Unknown V0.0.1 ]\n
